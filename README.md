@@ -3,7 +3,7 @@
 # Gym Class Scheduling and Membership Management System
 
 ## Project Overview
-The Gym Class Scheduling and Membership Management System is a web application developed using Laravel 10, Jetstram livewire, and Spatie's Laravel Permission package to streamline the management of gym classes and trainers. The system manages trainers and class schedules, while trainers can view their assigned classes, and trainees can manage their profiles and book available classes. The application incorporates role-based access control and uses API endpoints for seamless interaction between the frontend and backend.
+The Gym Class Scheduling and Membership Management System is a web application developed using Laravel 10, Jetstram Livewire, and Spatie's Laravel Permission package to streamline the management of gym classes and trainers. The system manages trainers and class schedules, while trainers can view their assigned classes, and trainees can manage their profiles and book available classes. The application incorporates role-based access control and uses API endpoints for seamless interaction between the frontend and backend.
 
 ## Database Schema
 The system utilizes Eloquent ORM to define the following models and their relationships:
@@ -109,6 +109,5 @@ The following API endpoints are available for interaction:
 - **Password:** nishat@gmail.com
 
 ## Live Deployment Link
-facing problem with that as i don't have server
-
+As you mentioned Heroku or Laravel Forge-like platforms for deployment, none of these are free now, not even Heroku. So, I am sorry.
 
