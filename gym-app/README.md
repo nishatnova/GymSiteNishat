@@ -1,66 +1,114 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# GymSiteNishat
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Gym Class Scheduling and Membership Management System
 
-## About Laravel
+## Project Overview
+The Gym Class Scheduling and Membership Management System is a web application developed using Laravel 10, Jetstram livewire, and Spatie's Laravel Permission package to streamline the management of gym classes and trainers. The system manages trainers and class schedules, while trainers can view their assigned classes, and trainees can manage their profiles and book available classes. The application incorporates role-based access control and uses API endpoints for seamless interaction between the frontend and backend.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Database Schema
+The system utilizes Eloquent ORM to define the following models and their relationships:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **User**
+  - Role: Admin, Trainer, Trainee
+  - Relationships:
+    - Has One Trainee
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Trainer**
+  - Fields: `user_id`, 'mobile', 'image', 'experience', 'description', 'active_status', `expertise`, `availability`
+  - Relationships:
+    - Belongs to User
+    - Has Many GymClasses
 
-## Learning Laravel
+- **GymClass**
+  - Fields: `name`, `trainer_id`, `class_time`, `duration`, `capacity`
+  - Relationships:
+    - Belongs to Trainer
+    - Has Many Bookings
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Booking**
+  - Fields: `trainee_id`, `gym_class_id`, `booking_time`
+  - Relationships:
+    - Belongs to User
+    - Has Many GymClasses
+    - Has Many Bookings
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## API Documentation
+The following API endpoints are available for interaction:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Trainer Endpoints
+- **GET /api/trainers**
+  - **Description:** List all trainers.
+  - **Response:** JSON array of trainers.
 
-## Laravel Sponsors
+- **POST /api/trainers**
+  - **Description:** Create a new trainer.
+  - **Parameters:** 
+    - `user_id`: ID of the user (trainer).
+    - `expertise`: Trainer's expertise.
+  - **Response:** JSON object of the created trainer.
+ 
+  - **PUT /api/trainers/{trainer}**
+  - **Description:** UpDate a trainer.
+  - **Parameters:** 
+    - `user_id`: ID of the user (trainer).
+    - `expertise`: Trainer's expertise.
+  - **Response:** JSON object of the created trainer.
+ 
+  - **DELETE /api/trainer/{trainer}s**
+  - **Description:** Delete a trainer.
+  - **Parameters:** 
+    - `user_id`: ID of the user (trainer).
+    - `expertise`: Trainer's expertise.
+  - **Response:** JSON object of the created trainer.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Gym Class Endpoints
+- **GET /api/gym-classes**
+  - **Description:** List all gym classes.
+  - **Response:** JSON array of gym classes.
 
-### Premium Partners
+- **POST /api/gym-classes**
+  - **Description:** Create a new gym class.
+  - **Parameters:** 
+    - `trainer_id`: ID of the assigned trainer.
+    - `class_time`: Scheduled time for the class.
+    - `capacity`: Maximum number of participants.
+  - **Response:** JSON object of the created gym class.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Booking Endpoints
+- **GET /api/bookings**
+  - **Description:** List all bookings for the authenticated trainee.
+  - **Response:** JSON array of bookings.
 
-## Contributing
+- **POST /api/bookings**
+  - **Description:** Create a new booking for a gym class.
+  - **Parameters:** 
+    - `gym_class_id`: ID of the gym class to book.
+  - **Response:** JSON object of the created booking.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **DELETE /api/bookings/{id}**
+  - **Description:** Delete a specific booking.
+  - **Response:** HTTP 204 No Content.
 
-## Code of Conduct
+## APIs in Fronted:
+- **/login.html:** User Login.
+- **/trainers.html:** CREATE, UPDATE, DELETE, show list.
+- **/gym-classes.html:** Gym Class Create and show list.
+- **/bookins.html:** See Trainees booking list and book class.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+## Admin Credentials
+- **Email:** admin@gmail.com
+- **Password:** admin@gmail.com
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Trainer Credentials
+- **Email:** abcd@gmail.com
+- **Password:** abcd@gmail.com
 
-## License
+## Trainee Credentials
+- **Email:** nishat@gmail.com
+- **Password:** nishat@gmail.com
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Live Deployment Link
+facing problem with that as i don't have server
+
+
