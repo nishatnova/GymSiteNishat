@@ -9,6 +9,14 @@ use Auth;
 
 class BookingController extends Controller
 {
+
+    // In BookingController.php
+    public function index()
+    {
+        $bookings = Booking::with('gymClass')->where('trainee_id', auth()->id())->get();
+        return view('trainee.home.classes', compact('bookings'));
+    }
+
     public function create(Request $request)
     {
         $request->validate([

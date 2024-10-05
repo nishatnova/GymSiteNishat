@@ -38,16 +38,16 @@ class CreateNewUser implements CreatesNewUsers
         ]);
 
         // Assign role to the user based on the input
-        $role = $input['role']; // Get the role from form input
-        $user->assignRole($role); // Assign the selected role
+        $role = $input['role'];
+        $user->assignRole($role);
 
         if ($role === 'Trainee') {
             Trainee::create([
                 'user_id' => $user->id,
-                'mobile' => '0111222', // Provide default or specific values
-                'gender' => 'female',        // You might want to replace this with $input['gender'] if available
-                'date_of_birth' => now()->toDateString(), // Same as above
-                // add other necessary fields if required
+                'mobile' => '0111222',
+                'gender' => 'female',
+                'date_of_birth' => now()->toDateString(),
+
             ]);
         }
 

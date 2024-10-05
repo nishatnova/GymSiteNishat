@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Classes</title>
+</head>
+<body>
+<h2>Add Gym Class</h2>
+<form id="addGymClassForm">
+    <select id="trainer_id" required>
+        <option value="">Select Trainer</option>
+        <!-- Trainer names will be populated here -->
+    </select>
+    <input type="datetime-local" id="class_time" placeholder="Class Time" required>
+    <input type="number" id="capacity" placeholder="Capacity" required>
+    <button type="submit">Add Gym Class</button>
+</form>
+
+<h2>Gym Class List</h2>
+<ul id="gymClassList"></ul>
+
+<script>
+    async function fetchTrainers() {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://127.0.0.1:8000/api/trainers', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const trainers = await response.json();
+        const trainerSelect = document.getElementById('trainer_id');
+        trainerSelect.innerHTML = '<option value="">Select Trainer</option>'; // Reset options
+
+        trainers.forEach(trainer => {
+            const option = document.createElement('option');
+            option.value = trainer.id; // Assuming trainer.id is the trainer ID
+            option.textContent = `${trainer.user.name}`; // Display user name
+            trainerSelect.appendChild(option);
+        });
+    }
+
+    async function fetchGymClasses() {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://127.0.0.1:8000/api/gym-classes', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const gymClasses = await response.json();
+        const gymClassList = document.getElementById('gymClassList');
+        gymClassList.innerHTML = '';
+
+        gymClasses.forEach(gymClass => {
+            const li = document.createElement('li');
+            li.textContent = `${gymClass.name} - ${gymClass.trainer.user.name} at ${new Date(gymClass.class_time).toLocaleString()} (Capacity: ${gymClass.capacity})`;
+            gymClassList.appendChild(li);
+        });
+    }
+
+    document.getElementById('addGymClassForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const trainerId = document.getElementById('trainer_id').value;
+        const classTime = document.getElementById('class_time').value;
+        const capacity = document.getElementById('capacity').value;
+        const token = localStorage.getItem('token');
+
+        try {
+            await fetch('http://127.0.0.1:8000/api/gym-classes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ trainer_id: trainerId, class_time: classTime, capacity: capacity }),
+            });
+            alert('Gym class added successfully!');
+            fetchGymClasses(); // Refresh gym class list
+        } catch (error) {
+            alert('Failed to add gym class: ' + error.message);
+        }
+    });
+
+    // Fetch trainers and gym classes on page load
+    fetchTrainers();
+    fetchGymClasses();
+</script>
+</body>
+</html>

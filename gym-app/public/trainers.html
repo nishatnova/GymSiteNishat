@@ -1,0 +1,121 @@
+<h2>Add Trainer</h2>
+<form id="addTrainerForm">
+    <select id="user_id" required>
+        <option value="">Select Trainer</option>
+        <!-- Trainer names will be populated here -->
+    </select>
+    <input type="text" id="expertise" placeholder="Expertise" required>
+    <button type="submit">Add Trainer</button>
+</form>
+
+<h2>Trainer List</h2>
+<ul id="trainerList"></ul>
+
+<script>
+    async function fetchTrainers() {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://127.0.0.1:8000/api/trainers', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const trainers = await response.json();
+        const trainerList = document.getElementById('trainerList');
+        trainerList.innerHTML = '';
+
+        // Populate the dropdown and list
+        const userSelect = document.getElementById('user_id');
+        userSelect.innerHTML = '<option value="">Select Trainer</option>'; // Reset options
+
+        trainers.forEach(trainer => {
+            const li = document.createElement('li');
+            li.id = `trainer-${trainer.id}`; // Unique ID for the trainer list item
+            li.textContent = `${trainer.user.name} (${trainer.expertise})`;
+
+            // Create Update button
+            const updateButton = document.createElement('button');
+            updateButton.textContent = 'Update';
+            updateButton.onclick = () => updateTrainer(trainer.id, trainer.user.id, trainer.expertise);
+            li.appendChild(updateButton);
+
+            // Create Delete button
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = () => deleteTrainer(trainer.id);
+            li.appendChild(deleteButton);
+
+            trainerList.appendChild(li);
+
+            // Create option for select dropdown
+            const option = document.createElement('option');
+            option.value = trainer.user.id; // Assuming trainer.user.id is the user ID
+            option.textContent = trainer.user.name; // Display user name
+            userSelect.appendChild(option);
+        });
+    }
+
+    document.getElementById('addTrainerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const userId = document.getElementById('user_id').value;
+        const expertise = document.getElementById('expertise').value;
+        const token = localStorage.getItem('token');
+
+        try {
+            await fetch('http://127.0.0.1:8000/api/trainers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ user_id: userId, expertise }),
+            });
+            alert('Trainer added successfully!');
+            fetchTrainers(); // Refresh trainer list
+        } catch (error) {
+            alert('Failed to add trainer');
+        }
+    });
+
+    async function updateTrainer(trainerId, userId, currentExpertise) {
+        const newExpertise = prompt('Update Expertise', currentExpertise);
+        if (newExpertise) {
+            const token = localStorage.getItem('token');
+
+            try {
+                await fetch(`http://127.0.0.1:8000/api/trainers/${trainerId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ user_id: userId, expertise: newExpertise }),
+                });
+                alert('Trainer updated successfully!');
+                fetchTrainers(); // Refresh trainer list
+            } catch (error) {
+                alert('Failed to update trainer');
+            }
+        }
+    }
+
+    async function deleteTrainer(trainerId) {
+        const confirmation = confirm('Are you sure you want to delete this trainer?');
+        if (confirmation) {
+            const token = localStorage.getItem('token');
+
+            try {
+                await fetch(`http://127.0.0.1:8000/api/trainers/${trainerId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                alert('Trainer deleted successfully!');
+                fetchTrainers(); // Refresh trainer list
+            } catch (error) {
+                alert('Failed to delete trainer');
+            }
+        }
+    }
+
+    fetchTrainers(); // Load trainers on page load
+</script>
