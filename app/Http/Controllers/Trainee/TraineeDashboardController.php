@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Trainee;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Booking;
 use Auth;
 
 class TraineeDashboardController extends Controller
@@ -50,4 +51,16 @@ class TraineeDashboardController extends Controller
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
+
+
+    public function myBookings()
+    {
+        // Get all bookings for the authenticated trainee, eager load the related GymClass
+        $bookings = Booking::with('gymClass')
+            ->where('trainee_id', Auth::id())
+            ->get();
+
+        return view('trainee.home.booking', compact('bookings'));
+    }
+
 }

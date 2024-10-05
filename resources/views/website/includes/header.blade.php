@@ -30,13 +30,13 @@
 
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('list.gymclass')}}" class="nav-link">
                                 Class Schedule
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('list.trainers')}}" class="nav-link">
                                 Trainers
                             </a>
                         </li>

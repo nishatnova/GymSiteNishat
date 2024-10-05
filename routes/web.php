@@ -24,6 +24,8 @@ Route::group(['middleware' => ['role:Trainer']], function() {
 });
 
 Route::get('/', [WebsiteController::class, 'index'])->name('home');
+Route::get('/list/gymclass', [WebsiteController::class, 'gymClass'])->name('list.gymclass');
+Route::get('/list/trainers', [WebsiteController::class, 'trainers'])->name('list.trainers');
 
 Route::group(['middleware' => ['role:Admin']], function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
@@ -37,6 +39,7 @@ Route::group(['middleware' => ['role:Trainee']], function() {
     Route::get('/trainee/dashboard', [TraineeDashboardController::class, 'index'])->name('trainee.dashboard');
     Route::post('/trainee/profile/update', [TraineeDashboardController::class, 'updateProfile'])->name('trainee.profile.update');
     Route::post('/bookings', [BookingController::class, 'create'])->name('bookings.create');
+    Route::get('list/bookings', [TraineeDashboardController::class, 'myBookings'])->name('bookings.list');
 });
 
 

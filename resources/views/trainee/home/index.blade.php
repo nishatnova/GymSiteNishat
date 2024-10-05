@@ -3,6 +3,9 @@
 @section('title', 'Trainee Profile')
 
 @section('body')
+    <div class="text-end mt-30 pt-50 mb-5">
+       <a href="{{route('bookings.list')}}"> <button type="submit" class="btn update-info-btn" style="margin-right: 20px;">View My Classes</button> </a>
+    </div>
     <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2 text-center">My Profile</h1>
     </div>
