@@ -97,9 +97,10 @@ The following API endpoints are available for interaction:
 
 ## APIs in Fronted:
 - **/login.html:** User Login.
+- **/logout.html:** User Logout.
 - **/trainers.html:** CREATE, UPDATE, DELETE, show list.
 - **/gym-classes.html:** Gym Class Create and show list.
-- **/bookins.html:** See Trainees booking list and book class.
+- **/bookings.html:** See Trainees booking list and book class.
 
 
 ## Admin Credentials
