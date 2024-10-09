@@ -14,14 +14,14 @@ The system utilizes Eloquent ORM to define the following models and their relati
     - Has One Trainee
    
 - **Trainee**
-  - Fields: `user_id`, `mobile`, `gender`, 'date_of_birth'
+  - Fields: 'user_id', 'mobile', 'gender', 'date_of_birth'
   - Relationships:
     - Belongs to User
     - Has Many GymClasses
     - Has Many Bookings
 
 - **Trainer**
-  - Fields: `user_id`, 'mobile', 'image', 'experience', 'description', 'active_status', `expertise`, `availability`
+  - Fields: 'user_id', 'mobile', 'image', 'experience', 'description', 'active_status', 'expertise', 'availability'
   - Relationships:
     - Belongs to User
     - Has Many GymClasses
