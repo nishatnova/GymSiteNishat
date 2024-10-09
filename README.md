@@ -12,6 +12,13 @@ The system utilizes Eloquent ORM to define the following models and their relati
   - Role: Admin, Trainer, Trainee
   - Relationships:
     - Has One Trainee
+   
+- **Trainee**
+  - Fields: `user_id`, `mobile`, `gender`, 'date_of_birth'
+  - Relationships:
+    - Belongs to User
+    - Has Many GymClasses
+    - Has Many Bookings
 
 - **Trainer**
   - Fields: `user_id`, 'mobile', 'image', 'experience', 'description', 'active_status', `expertise`, `availability`
@@ -28,9 +35,8 @@ The system utilizes Eloquent ORM to define the following models and their relati
 - **Booking**
   - Fields: `trainee_id`, `gym_class_id`, `booking_time`
   - Relationships:
-    - Belongs to User
-    - Has Many GymClasses
-    - Has Many Bookings
+    - Belongs to Trainee
+    - Belongs to GymClasses
 
 ## API Documentation
 The following API endpoints are available for interaction:
